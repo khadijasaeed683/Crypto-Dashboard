@@ -28,10 +28,17 @@ The codebase emphasizes advanced asynchronous ES6 JavaScript, strict state separ
 ## Project Architecture
 
 ```text
-crypto-monitor/
+
+## Project Architecture
+
+```text
+Crypto-Dashboard/
 ├── index.html
 ├── css/
-│   └── styles.css
+    ├── variables.css   # CSS variables (Light/Dark theme, colors, typography)
+    ├── header.css      # Top navigation and auth overlay styles
+    ├── portfolio.css   # Portfolio tracker and allocation donut styles
+    └── styles.css      # Main layout, grid architecture, and watchlist styles
 └── js/
     ├── config.js       # Environment variables and global constants
     ├── storage.js      # Synchronous LocalStorage/SessionStorage wrapper
