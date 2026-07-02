@@ -28,10 +28,6 @@ The codebase emphasizes advanced asynchronous ES6 JavaScript, strict state separ
 ## Project Architecture
 
 ```text
-
-## Project Architecture
-
-```text
 Crypto-Dashboard/
 ├── index.html
 ├── css/
