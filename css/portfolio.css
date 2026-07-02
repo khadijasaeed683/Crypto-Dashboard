@@ -1,0 +1,374 @@
+/* ============================================
+   portfolio.css – Portfolio Tracker Enhancements
+   All existing class names/IDs are preserved.
+   ============================================ */
+
+/* ---------- Animations ---------- */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fadePulse {
+    0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.3); }
+    70% { box-shadow: 0 0 0 8px rgba(79, 70, 229, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+}
+
+/* ---------- Inline Form (inputs + Add button) ---------- */
+.inline-form {
+    display: flex;
+    gap: var(--space-3, 12px);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-5, 20px);
+}
+
+.inline-form input {
+    flex: 1 1 140px;
+    padding: 10px 14px;
+    border-radius: var(--radius-md, 10px);
+    border: 1px solid var(--border, #262b36);
+    background: var(--bg-primary, #0d0f14);
+    color: var(--text-primary, #f2f4f7);
+    font-size: 0.9rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.inline-form input:focus {
+    border-color: var(--accent, #4f46e5);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+    outline: none;
+}
+
+/* ---- "Add Asset" button with icon ---- */
+.inline-form button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: var(--accent, #4f46e5);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md, 10px);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.25s;
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 35%, transparent);
+    white-space: nowrap;
+}
+
+.inline-form button:hover {
+    background: var(--accent-hover, #4338ca);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.inline-form button:active {
+    transform: scale(0.96);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+
+.inline-form button svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+/* ---------- Asset List (grid items) ---------- */
+.asset-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4, 16px);
+    padding: 0;
+    margin: 0 0 var(--space-4, 16px) 0;
+}
+
+/* Each portfolio item gets the slideUp animation */
+.portfolio-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4, 16px) var(--space-5, 20px);
+    background: var(--bg-primary, #0d0f14);
+    border: 1px solid var(--border, #262b36);
+    border-radius: var(--radius-md, 10px);
+    transition: transform 0.25s ease, box-shadow 0.25s ease,
+                border-color 0.25s ease, background 0.25s ease;
+    animation: slideUp 0.35s ease forwards;
+    opacity: 0; /* start hidden, animation reveals */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Staggered delays – works for up to 8 items */
+.portfolio-item:nth-child(1)  { animation-delay: 0.02s; }
+.portfolio-item:nth-child(2)  { animation-delay: 0.04s; }
+.portfolio-item:nth-child(3)  { animation-delay: 0.06s; }
+.portfolio-item:nth-child(4)  { animation-delay: 0.08s; }
+.portfolio-item:nth-child(5)  { animation-delay: 0.10s; }
+.portfolio-item:nth-child(6)  { animation-delay: 0.12s; }
+.portfolio-item:nth-child(7)  { animation-delay: 0.14s; }
+.portfolio-item:nth-child(8)  { animation-delay: 0.16s; }
+.portfolio-item:nth-child(9)  { animation-delay: 0.18s; }
+.portfolio-item:nth-child(10) { animation-delay: 0.20s; }
+
+.portfolio-item:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.25);
+    border-color: var(--accent, #4f46e5);
+    background: color-mix(in srgb, var(--bg-hover) 60%, var(--bg-primary));
+}
+
+.portfolio-item span {
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--text-primary, #f2f4f7);
+}
+
+/* Optional: if your JS adds a separate amount class, target it;
+   otherwise the existing span works fine */
+.portfolio-item .asset-amount,
+.portfolio-item span:last-child {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.95rem;
+    color: var(--text-secondary, #8b93a3);
+}
+
+/* ---------- Pagination (Prev / Next with icons) ---------- */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-6, 24px);
+    padding-top: var(--space-4, 16px);
+    border-top: 1px solid var(--border, #262b36);
+    gap: var(--space-3, 12px);
+    flex-wrap: wrap;
+}
+
+.pagination button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: var(--bg-secondary, #151822);
+    border: 1px solid var(--border, #262b36);
+    border-radius: var(--radius-sm, 6px);
+    color: var(--text-primary, #f2f4f7);
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s,
+                transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.pagination button:hover:not(:disabled) {
+    background: var(--bg-hover, #1d212c);
+    border-color: var(--accent, #4f46e5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.pagination button:active:not(:disabled) {
+    transform: scale(0.94);
+}
+
+.pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.pagination button svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+/* Page number badge */
+#page-info {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary, #8b93a3);
+    font-family: var(--font-mono, monospace);
+    padding: 4px 16px;
+    background: var(--bg-primary, #0d0f14);
+    border-radius: var(--radius-sm, 6px);
+    border: 1px solid var(--border, #262b36);
+    min-width: 70px;
+    text-align: center;
+    transition: background 0.2s, transform 0.2s;
+}
+
+/* Tiny animation on page change – you can trigger this via JS
+   by toggling a class, but it looks good even without */
+#page-info:not(:empty) {
+    animation: fadePulse 0.5s ease;
+}
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 600px) {
+    .inline-form {
+        flex-direction: column;
+    }
+    .inline-form input,
+    .inline-form button {
+        flex: 1 1 auto;
+        width: 100%;
+        justify-content: center;
+    }
+    .asset-list {
+        grid-template-columns: 1fr;
+    }
+    .pagination {
+        justify-content: center;
+    }
+    .pagination button {
+        padding: 8px 14px;
+    }
+}
+
+/* ============================================
+   Portfolio Header – Heading + Inline Search
+   ============================================ */
+
+.portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4, 16px);
+    margin-bottom: var(--space-5, 20px);
+    border-bottom: 1px solid var(--border, #262b36);
+    padding-bottom: var(--space-3, 12px);
+    flex-wrap: wrap; /* Allows wrapping on tiny screens */
+}
+
+/* Override the default h2 styles inside this header */
+.portfolio-header h2 {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+    font-size: 1.15rem; /* Slightly smaller to fit nicely */
+}
+
+/* ---- Compact Search Bar (right side) ---- */
+.portfolio-header .search-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    max-width: 260px;
+    width: 100%;
+}
+
+.portfolio-header .search-container input {
+    flex: 1 1 auto;
+    min-width: 100px;
+    padding: 6px 10px 6px 32px;
+    font-size: 0.8rem;
+    border-radius: var(--radius-sm, 6px);
+    border: 1px solid var(--border, #262b36);
+    background: var(--bg-primary, #0d0f14);
+    color: var(--text-primary, #f2f4f7);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238b93a3' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 8px center;
+    background-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s, width 0.3s;
+}
+
+.portfolio-header .search-container input:focus {
+    border-color: var(--accent, #4f46e5);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 20%, transparent);
+    outline: none;
+    background-color: var(--bg-secondary, #151822);
+}
+
+.portfolio-header .search-container input::placeholder {
+    color: var(--text-secondary, #8b93a3);
+    opacity: 0.6;
+    font-size: 0.75rem;
+}
+
+/* ---- Search Button (Icon Only) ---- */
+.portfolio-header .search-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    background: var(--bg-secondary, #151822);
+    border: 1px solid var(--border, #262b36);
+    border-radius: var(--radius-sm, 6px);
+    color: var(--text-secondary, #8b93a3);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s, color 0.2s;
+    flex-shrink: 0;
+}
+
+.portfolio-header .search-container button:hover {
+    background: var(--bg-hover, #1d212c);
+    border-color: var(--accent, #4f46e5);
+    color: var(--text-primary, #f2f4f7);
+    transform: translateY(-1px);
+}
+
+.portfolio-header .search-container button:active {
+    transform: scale(0.92);
+}
+
+.portfolio-header .search-container button svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    fill: none;
+}
+
+/* ---- Remove old standalone search margins ---- */
+/* Ensure the old .search-container isn't used elsewhere, 
+   but if it is, these overrides handle it */
+.search-container {
+    margin-bottom: 0; /* Reset any previous margin */
+}
+
+/* ---- Mobile Responsiveness for Header ---- */
+@media (max-width: 600px) {
+    .portfolio-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-2, 8px);
+    }
+    .portfolio-header h2 {
+        text-align: left;
+        font-size: 1.1rem;
+    }
+    .portfolio-header .search-container {
+        max-width: 100%;
+    }
+    .portfolio-header .search-container input {
+        padding: 8px 10px 8px 34px;
+        font-size: 0.85rem;
+        background-size: 16px;
+        background-position: 10px center;
+    }
+}

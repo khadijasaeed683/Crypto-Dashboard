@@ -1,0 +1,524 @@
+/* --- Resets & Typography --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.5;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* --- Utility Classes --- */
+.hidden { display: none !important; }
+.price-up { color: var(--success); font-weight: 600; }
+.price-down { color: var(--danger); font-weight: 600; }
+.price-neutral { color: var(--text-secondary); }
+
+/* --- Auth Overlay --- */
+/* .overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(8, 9, 13, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: var(--space-4);
+} */
+
+.overlay .card {
+    width: 100%;
+    max-width: 380px;
+}
+
+.overlay h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-5);
+    border-bottom: none;
+    padding-bottom: 0;
+    color: var(--text-primary);
+}
+
+.form-group {
+    margin-bottom: var(--space-4);
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: var(--space-2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* --- Inputs & Buttons --- */
+input, button {
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+button {
+    cursor: pointer;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+button:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.danger-btn {
+    background-color: transparent;
+    color: var(--danger);
+    border: 1px solid color-mix(in srgb, var(--danger) 40%, var(--border));
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    border-radius: var(--radius-sm);
+}
+
+.danger-btn:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--danger) 12%, transparent);
+    border-color: var(--danger);
+    transform: translateY(-1px);
+}
+
+/* --- Layout & Grid Architecture --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--bg-secondary);
+}
+
+header .controls { display: flex; gap: var(--space-3); }
+
+/* The Master-Detail Responsive Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(400px, 650px) minmax(0, 760px);
+    grid-template-areas:
+        "watchlist chart"
+        "portfolio portfolio";
+    gap: var(--space-6);
+    padding: var(--space-6) var(--space-8);
+    max-width: 1600px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* Breakpoint 1: Move to a single column layout */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "watchlist"
+            "chart"
+            "portfolio";
+    }
+}
+
+/* Breakpoint 2: Mobile optimizations */
+@media (max-width: 850px) {
+    .dashboard-grid {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "watchlist"
+            "chart"
+            "portfolio";
+        padding: var(--space-4);
+        gap: var(--space-5);
+    }
+    
+    .card {
+        padding: var(--space-4);
+    }
+
+    .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
+
+}
+
+/* --- 1. Watchlist (Left Column) Updates --- */
+.watchlist-section { 
+    grid-area: watchlist; 
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.watchlist-data-header, .watchlist-item {
+    display: grid;
+    grid-template-columns: 1.2fr 1.5fr 1fr 1.5fr 1.5fr;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 600px; /* Forces scrolling on small screens to prevent squishing */
+}
+
+.watchlist-data-header {
+    padding: 0 var(--space-4) var(--space-3) var(--space-4);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-3);
+}
+
+.watchlist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.watchlist-item {
+    padding: 12px var(--space-4);
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.watchlist-item:nth-child(even) {
+    background: color-mix(in srgb, var(--bg-secondary) 45%, var(--bg-primary));
+}
+
+.watchlist-item:hover {
+    background: var(--bg-hover);
+    border-color: var(--text-secondary);
+    transform: translateX(2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.watchlist-item.active {
+    background: color-mix(in srgb, var(--accent) 10%, var(--bg-primary));
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+
+.symbol-name { font-weight: 700; font-size: 0.99rem; letter-spacing: -0.01em; }
+.data-col { font-size: 0.88rem; font-family: var(--font-mono); color: var(--text-primary); }
+.sparkline-canvas { display: block; width: 100%; }
+
+
+.card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+    transition: box-shadow 0.25s ease;
+    min-width: 0;
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-5);
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--space-3);
+}
+
+/* --- Specific Sections --- */
+
+.asset-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.symbol-price { font-size: 0.9rem; color: var(--text-secondary); margin-top: var(--space-1); }
+
+/* 2. Chart column */
+.chart-row {
+    grid-area: chart;
+    display: grid;
+    grid-template-rows: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: var(--space-4);
+    align-self: stretch;
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+    width: 100%;
+}
+
+.chart-section {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-3);
+}
+
+.chart-header h2 { border: none; margin: 0; padding: 0; color: var(--text-primary); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+.chart-header span { font-size: 1rem; font-weight: 700; font-family: var(--font-mono); }
+
+.canvas-container {
+    flex: 1;
+    min-height: 120px;
+    width: 100%;
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative; 
+}
+
+canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#main-chart {
+    width: 100%;
+    height: 100%;
+}
+
+/* 2b. Portfolio Allocation */
+.allocation-section {
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.allocation-section h2 {
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+}
+
+.allocation-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+    min-width: 0;
+}
+
+.allocation-chart-wrap {
+    flex-shrink: 0;
+    width: clamp(90px, 24vw, 130px);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.allocation-chart-wrap canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.allocation-legend {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    max-height: 100%;
+    overflow-y: auto;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.allocation-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.8rem;
+}
+
+.allocation-swatch {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.allocation-label {
+    color: var(--text-primary);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
+.allocation-percent {
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    flex-shrink: 0;
+}
+
+.allocation-empty {
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+}
+
+@media (max-width: 720px) {
+    .allocation-body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .allocation-legend {
+        max-height: 140px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .chart-row {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+
+    .chart-section {
+        min-height: 320px;
+    }
+
+    .allocation-section {
+        min-height: 190px;
+    }
+}
+
+@media (max-width: 850px) {
+    .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-2);
+    }
+
+    .chart-section {
+        min-height: 300px;
+    }
+
+    .canvas-container {
+        min-height: 180px;
+    }
+
+    .allocation-section {
+        min-height: 220px;
+    }
+}
+
+/* 3. Portfolio Tracker (Bottom Span) */
+.portfolio-section { grid-area: portfolio; }
+
+.inline-form {
+    display: flex;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.asset-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-4);
+}
+
+.portfolio-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4);
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.portfolio-item:nth-child(even) {
+    background: color-mix(in srgb, var(--bg-secondary) 40%, var(--bg-primary));
+}
+
+.portfolio-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--text-secondary);
+}
+
+.portfolio-item span { font-weight: 600; font-size: 1.05rem; letter-spacing: -0.01em; }
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+}
+
+#page-info {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+}
